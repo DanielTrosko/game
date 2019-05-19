@@ -1,6 +1,6 @@
-package place;
+package com.sda.game.place;
 
-import monster.MonsterFactory;
+import com.sda.game.monster.MonsterFactory;
 
 import java.math.BigDecimal;
 import java.util.Arrays;

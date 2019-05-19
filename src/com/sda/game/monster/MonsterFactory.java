@@ -1,7 +1,7 @@
-package monster;
+package com.sda.game.monster;
 
-import person.PersonType;
-import weapon.WeaponFactory;
+import com.sda.game.person.PersonType;
+import com.sda.game.weapon.WeaponFactory;
 
 public class MonsterFactory {
     public static Monster bolb(){

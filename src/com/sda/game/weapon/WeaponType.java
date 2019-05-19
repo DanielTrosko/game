@@ -1,4 +1,4 @@
-package weapon;
+package com.sda.game.weapon;
 
 public enum WeaponType {
     ROD,
@@ -6,5 +6,6 @@ public enum WeaponType {
     BOW,
     MACE,
     HAND,
+    SPELL,
 
 }

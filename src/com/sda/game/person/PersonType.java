@@ -1,4 +1,4 @@
-package person;
+package com.sda.game.person;
 
 public enum PersonType {
     WARRIOR,

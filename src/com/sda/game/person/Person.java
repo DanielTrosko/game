@@ -1,6 +1,6 @@
-package person;
+package com.sda.game.person;
 
-import weapon.Weapon;
+import com.sda.game.weapon.Weapon;
 
 public class Person {
     private String name;
@@ -47,6 +47,18 @@ public class Person {
         this.level = level;
     }
 
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
+    }
+
+    public void setHealthPoint(Integer healthPoint) {
+        this.healthPoint = healthPoint;
+    }
+
+    public void setManaPoint(Integer manaPoint) {
+        this.manaPoint = manaPoint;
+    }
+
     @Override
     public String toString() {
         return "Person{" +
@@ -55,7 +67,7 @@ public class Person {
                 ", level=" + level +
                 ", healthPoint=" + healthPoint +
                 ", manaPoint=" + manaPoint +
-                ", weapon=" + weapon +
+                ", com.sda.game.weapon=" + weapon +
                 '}';
     }
 }

@@ -1,8 +1,8 @@
-package monster;
+package com.sda.game.monster;
 
-import person.Person;
-import person.PersonType;
-import weapon.Weapon;
+import com.sda.game.person.Person;
+import com.sda.game.person.PersonType;
+import com.sda.game.weapon.Weapon;
 
 public class Monster extends Person {
 

@@ -1,4 +1,4 @@
-package weapon;
+package com.sda.game.weapon;
 
 import java.math.BigDecimal;
 
