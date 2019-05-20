@@ -6,7 +6,7 @@ import com.sda.game.weapon.Weapon;
 
 public class Monster extends Person {
 
-    public Monster(String name, PersonType personType, Integer level, Integer healthPoint, Integer manaPoint, Weapon weapon) {
+    Monster(String name, PersonType personType, Integer level, Integer healthPoint, Integer manaPoint, Weapon weapon) {
         super(name, personType, level, healthPoint, manaPoint, weapon);
     }
 

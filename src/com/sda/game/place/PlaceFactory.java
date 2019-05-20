@@ -8,9 +8,9 @@ import java.util.Collections;
 
 public class PlaceFactory {
     public static Place newbie(){
-        return new Place("Newbie",new BigDecimal(1500), Collections.singletonList(MonsterFactory.bolb()));
+        return new Place("Newbie",new BigDecimal(1500), Collections.singletonList(MonsterFactory.bolb()),1);
     }
     public static Place sunBay(){
-        return new Place("Sun Bay",new BigDecimal(2500),Arrays.asList(MonsterFactory.snake(),MonsterFactory.bolb()));
+        return new Place("Sun Bay",new BigDecimal(2500),Arrays.asList(MonsterFactory.snake(),MonsterFactory.bolb()),2);
     }
 }

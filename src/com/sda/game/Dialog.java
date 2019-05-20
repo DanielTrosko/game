@@ -9,6 +9,7 @@ import com.sda.game.spell.SpellFactory;
 
 import com.sda.game.weapon.WeaponFactory;
 
+import java.io.*;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
 import java.util.Random;
@@ -20,30 +21,57 @@ class Dialog {
     private static Monster monster;
     private static Random random = new SecureRandom();
 
-    static void choise() {
-        System.out.println("Podaj nick");
-        String name = scanner.nextLine();
-        System.out.println("Jaka postacia chcesz grac?\n1. dla Warrior\n2. dla Mage\n3. dla Paladin\n4. dla Knight");
-        int person = scanner.nextInt();
-        switch (person) {
-            case 1:
-                player = new Player(name, PersonType.WARRIOR, 2, 150, 50, WeaponFactory.mace(), new BigDecimal(500000), PlaceFactory.newbie(), SpellFactory.start());
-                break;
-            case 2:
-                player = new Player(name, PersonType.MAGE, 2, 100, 150, WeaponFactory.rod(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                break;
-            case 3:
-                player = new Player(name, PersonType.PALADIN, 2, 100, 100, WeaponFactory.bow(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                break;
-            case 4:
-                player = new Player(name, PersonType.KNIGHT, 2, 150, 50, WeaponFactory.knife(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                break;
+    static void choise() throws IOException, ClassNotFoundException {
+        System.out.println("Chcesz odczytac ostatni save? (tak/nie)");
+        String choise = scanner.next();
+        if (choise.equals("tak")) {
+            read();
+        } else if (choise.equals("nie")) {
+            System.out.println("Podaj nick");
+            String name = scanner.nextLine();
+            System.out.println("Jaka postacia chcesz grac?\n1. dla Warrior\n2. dla Mage\n3. dla Paladin\n4. dla Knight");
+            int person = scanner.nextInt();
+            switch (person) {
+                case 1:
+                    player = new Player(name, PersonType.WARRIOR, 2, 150, 50, WeaponFactory.mace(), new BigDecimal(500000), PlaceFactory.newbie(), SpellFactory.start());
+                    break;
+                case 2:
+                    player = new Player(name, PersonType.MAGE, 2, 100, 150, WeaponFactory.rod(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                    break;
+                case 3:
+                    player = new Player(name, PersonType.PALADIN, 2, 100, 100, WeaponFactory.bow(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                    break;
+                case 4:
+                    player = new Player(name, PersonType.KNIGHT, 2, 150, 50, WeaponFactory.knife(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                    break;
+            }
         }
+    }
+
+    private static void save() {
+        try {
+
+            FileOutputStream f = new FileOutputStream(new File("player.txt"));
+            ObjectOutputStream o = new ObjectOutputStream(f);
+
+            o.writeObject(player);
+            o.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void read() throws IOException, ClassNotFoundException {
+        FileInputStream f1 = new FileInputStream(new File("player.txt"));
+        ObjectInputStream o1 = new ObjectInputStream(f1);
+        player = (Player) o1.readObject();
+
+
     }
 
     private static void shop() {
         System.out.println("Co chcesz kupic?");
-        System.out.println("1. Bron\n2. Czar");
+        System.out.println("1. Bron\n2. Czar\n3. Potion");
         int choice = scanner.nextInt();
         if (choice == 1) {
             System.out.println("Ktoraj bron chcesz kupic?");
@@ -108,6 +136,45 @@ class Dialog {
                         System.out.println("Niewystarczajaca ilosc srodkow na koncie");
                     }
             }
+        } else if (choice == 3) {
+            System.out.println("Ktory potion chcesz kupic?");
+            System.out.println("1. Health potion\n2. Mana potion");
+            int potion = scanner.nextInt();
+            System.out.println("Ile potionow chcesz kupic?");
+            int amount = scanner.nextInt();
+            switch (potion) {
+                case 1:
+                    int health = player.getLevel() + amount + random.nextInt(75) + 1;
+                    player.setHealthPoint(player.getHealthPoint() + health);
+                    System.out.println("Health potion dodal Ci " + health + " pkt zycia");
+                    break;
+                case 2:
+                    int mana = player.getLevel() + amount + random.nextInt(35) + 1;
+                    player.setManaPoint(player.getManaPoint() + mana);
+                    System.out.println("Mana potion dodal Ci " + mana + " pkt many");
+            }
+        }
+
+    }
+
+    private static void changePlace() {
+        System.out.println("Lista miejsc:");
+        System.out.println("1 dla " + PlaceFactory.newbie().getName());
+        System.out.println("2 dla" + PlaceFactory.sunBay().getName());
+        int place = scanner.nextInt();
+        switch (place) {
+            case 1:
+                if (player.getWallet().compareTo(PlaceFactory.newbie().getPriceForBoat()) > 0) {
+                    player.setPlace(PlaceFactory.newbie());
+                    System.out.println("Zmieniles miejsce na " + PlaceFactory.newbie().getName());
+                }
+                break;
+            case 2:
+                if (player.getWallet().compareTo(PlaceFactory.sunBay().getPriceForBoat()) > 0) {
+                    player.setPlace(PlaceFactory.sunBay());
+                    System.out.println("Zmieniles miejsce na " + PlaceFactory.sunBay().getName());
+                }
+                break;
         }
 
     }
@@ -156,6 +223,7 @@ class Dialog {
                         if (monster.getHealthPoint() <= 0) {
                             System.out.println("Zabiles potwora!!! Twoj poziom zwieksza sie o " + monster.getLevel());
                             player.setLevel(player.getLevel() + monster.getLevel());
+                            alive = false;
                         }
                         break;
                     case 2:
@@ -164,6 +232,7 @@ class Dialog {
                         } else if (monster.getHealthPoint() <= 0) {
                             System.out.println("Zabiles potwora!!! Twoj poziom zwieksza sie o " + monster.getLevel());
                             player.setLevel(player.getLevel() + monster.getLevel());
+                            alive = false;
                         }
                         break;
                 }
@@ -196,9 +265,23 @@ class Dialog {
 
     }
 
+    private static void checkCharacter() {
+        System.out.println("=============================");
+        System.out.println("||Nazywasz sie: " + player.getName());
+        System.out.println("||Jestes: " + player.getPersonType());
+        System.out.println("||Lvl: " + player.getLevel());
+        System.out.println("||HP: " + player.getHealthPoint());
+        System.out.println("||MP: " + player.getManaPoint());
+        System.out.println("||Twoja bron to: " + player.getWeapon().getName());
+        System.out.println("||Stan konta: " + player.getWallet());
+        System.out.println("||Twoje miejsce to: " + player.getPlace().getName());
+        System.out.println("||Twoj czar to: " + player.getSpells().getName());
+        System.out.println("=============================");
+    }
+
     static void menu() {
         System.out.println("Co chcesz zrobic?");
-        System.out.println("1. Sklep\n2. Walka\n3. Wyswietl liste");
+        System.out.println("1. Sklep\n2. Walka\n3. Wyswietl liste\n4. Stan postaci\n5. Zmiana miejsca\n6. Zapis gry\n7. Zakoncz gre");
         int choise = scanner.nextInt();
         switch (choise) {
             case 1:
@@ -211,7 +294,23 @@ class Dialog {
             case 3:
                 show();
                 break;
+            case 4:
+                checkCharacter();
+                break;
+            case 5:
+                changePlace();
+                break;
+            case 6:
+                save();
+                break;
+            case 7:
+                close();
+                break;
         }
+    }
+    private static void close(){
+        System.out.println("Bye Bye!!!");
+        System.exit(0);
     }
 
     private static void placeList() {

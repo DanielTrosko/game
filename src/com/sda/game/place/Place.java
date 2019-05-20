@@ -12,11 +12,14 @@ public class Place {
     private String name;
     private BigDecimal priceForBoat;
     private ArrayList monsters;
+    private Integer requiredLevel;
 
-    public Place(String name, BigDecimal priceForBoat, List<Monster> monsters) {
+    Place(String name, BigDecimal priceForBoat, List<Monster> monsters, Integer requiredLevel) {
         this.name = name;
         this.priceForBoat = priceForBoat;
         this.monsters = new ArrayList<>(Arrays.asList(MonsterFactory.bolb(),MonsterFactory.snake()));
+        this.requiredLevel = requiredLevel;
+
     }
 
     public String getName() {
@@ -27,8 +30,16 @@ public class Place {
         return priceForBoat;
     }
 
-    public List<Monster> getMonsters() {
+    public ArrayList getMonsters() {
         return monsters;
+    }
+
+    public Integer getRequiredLevel() {
+        return requiredLevel;
+    }
+
+    public void setRequiredLevel(Integer requiredLevel) {
+        this.requiredLevel = requiredLevel;
     }
 
     @Override
