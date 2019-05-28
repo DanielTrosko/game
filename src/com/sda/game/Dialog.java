@@ -12,6 +12,7 @@ import com.sda.game.weapon.WeaponFactory;
 import java.io.*;
 import java.math.BigDecimal;
 import java.security.SecureRandom;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -27,24 +28,33 @@ class Dialog {
         if (choise.equals("tak")) {
             read();
         } else if (choise.equals("nie")) {
-            System.out.println("Podaj nick");
-            String name = scanner.nextLine();
-            System.out.println("Jaka postacia chcesz grac?\n1. dla Warrior\n2. dla Mage\n3. dla Paladin\n4. dla Knight");
-            int person = scanner.nextInt();
-            switch (person) {
-                case 1:
-                    player = new Player(name, PersonType.WARRIOR, 2, 150, 50, WeaponFactory.mace(), new BigDecimal(500000), PlaceFactory.newbie(), SpellFactory.start());
-                    break;
-                case 2:
-                    player = new Player(name, PersonType.MAGE, 2, 100, 150, WeaponFactory.rod(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                    break;
-                case 3:
-                    player = new Player(name, PersonType.PALADIN, 2, 100, 100, WeaponFactory.bow(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                    break;
-                case 4:
-                    player = new Player(name, PersonType.KNIGHT, 2, 150, 50, WeaponFactory.knife(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                    break;
-            }
+            int person = 0;
+            String name;
+            while (true) {
+                try {
+                    System.out.println("Podaj nick");
+                    name = scanner.nextLine();
+                    System.out.println("Jaka postacia chcesz grac?\n1. dla Warrior\n2. dla Mage\n3. dla Paladin\n4. dla Knight");
+                    person = scanner.nextInt();
+                    switch (person) {
+                        case 1:
+                            player = new Player(name, PersonType.WARRIOR, 2, 150, 50, WeaponFactory.mace(), new BigDecimal(500000), PlaceFactory.newbie(), SpellFactory.start());
+                            break;
+                        case 2:
+                            player = new Player(name, PersonType.MAGE, 2, 100, 150, WeaponFactory.rod(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                            break;
+                        case 3:
+                            player = new Player(name, PersonType.PALADIN, 2, 100, 100, WeaponFactory.bow(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                            break;
+                        case 4:
+                            player = new Player(name, PersonType.KNIGHT, 2, 150, 50, WeaponFactory.knife(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                            break;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Wpisz poprawnie!");
+                    scanner.next();
+                }
+            }///
         }
     }
 
@@ -70,113 +80,143 @@ class Dialog {
     }
 
     private static void shop() {
+        int choice;
+        int choiseWeapon;
+
+
         System.out.println("Co chcesz kupic?");
         System.out.println("1. Bron\n2. Czar\n3. Potion");
-        int choice = scanner.nextInt();
+        choice = scanner.nextInt();
         if (choice == 1) {
-            System.out.println("Ktoraj bron chcesz kupic?");
-            System.out.println("1. rod\n2. Magic rod\n3. Mace\n4. Bow\n5. Knife");
-            int choiseWeapon = scanner.nextInt();
-            switch (choiseWeapon) {
-                case 1:
-                    if (player.getWallet().compareTo(WeaponFactory.rod().getPrice()) > 0) {
-                        player.setWeapon(WeaponFactory.rod());
-                    } else {
-                        System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+            while (true) {
+                try {
+                    System.out.println("Ktoraj bron chcesz kupic?");
+                    System.out.println("1. rod\n2. Magic rod\n3. Mace\n4. Bow\n5. Knife");
+                    choiseWeapon = scanner.nextInt();
+                    switch (choiseWeapon) {
+                        case 1:
+                            if (player.getWallet().compareTo(WeaponFactory.rod().getPrice()) > 0) {
+                                player.setWeapon(WeaponFactory.rod());
+                            } else {
+                                System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+                            }
+                            break;
+                        case 2:
+                            if (player.getWallet().compareTo(WeaponFactory.magicRod().getPrice()) > 0) {
+                                player.setWeapon(WeaponFactory.magicRod());
+                            } else System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+                            break;
+                        case 3:
+                            if (player.getWallet().compareTo(WeaponFactory.mace().getPrice()) > 0) {
+                                player.setWeapon(WeaponFactory.mace());
+                            } else {
+                                System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+                            }
+                            break;
+                        case 4:
+                            if (player.getWallet().compareTo(WeaponFactory.bow().getPrice()) > 0) {
+                                player.setWeapon(WeaponFactory.bow());
+                            } else {
+                                System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+                            }
+                            break;
+                        case 5:
+                            if (player.getWallet().compareTo(WeaponFactory.knife().getPrice()) > 0) {
+                                player.setWeapon(WeaponFactory.knife());
+                            } else {
+                                System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+                            }
+                            break;
                     }
-                    break;
-                case 2:
-                    if (player.getWallet().compareTo(WeaponFactory.magicRod().getPrice()) > 0) {
-                        player.setWeapon(WeaponFactory.magicRod());
-                    } else System.out.println("Niewystarczajaca ilosc srodkow na koncie");
-                    break;
-                case 3:
-                    if (player.getWallet().compareTo(WeaponFactory.mace().getPrice()) > 0) {
-                        player.setWeapon(WeaponFactory.mace());
-                    } else {
-                        System.out.println("Niewystarczajaca ilosc srodkow na koncie");
-                    }
-                    break;
-                case 4:
-                    if (player.getWallet().compareTo(WeaponFactory.bow().getPrice()) > 0) {
-                        player.setWeapon(WeaponFactory.bow());
-                    } else {
-                        System.out.println("Niewystarczajaca ilosc srodkow na koncie");
-                    }
-                    break;
-                case 5:
-                    if (player.getWallet().compareTo(WeaponFactory.knife().getPrice()) > 0) {
-                        player.setWeapon(WeaponFactory.knife());
-                    } else {
-                        System.out.println("Niewystarczajaca ilosc srodkow na koncie");
-                    }
-                    break;
+                } catch (InputMismatchException e) {
+                    System.out.println("Wpisz poprawnie!");
+                }
             }
         } else if (choice == 2) {
-            System.out.println("Ktory czar chcesz kupic?");
-            System.out.println("1. Fire\n2. Water\n3. Earth");
-            int choiseSpell = scanner.nextInt();
-            switch (choiseSpell) {
-                case 1:
-                    if (player.getWallet().compareTo(SpellFactory.fire().getPrice()) > 0) {
-                        player.setSpells(SpellFactory.start());
-                    } else {
-                        System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+            while (true) {
+                try {
+                    System.out.println("Ktory czar chcesz kupic?");
+                    System.out.println("1. Fire\n2. Water\n3. Earth");
+                    int choiseSpell = scanner.nextInt();
+                    switch (choiseSpell) {
+                        case 1:
+                            if (player.getWallet().compareTo(SpellFactory.fire().getPrice()) > 0) {
+                                player.setSpells(SpellFactory.start());
+                            } else {
+                                System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+                            }
+                            break;
+                        case 2:
+                            if (player.getWallet().compareTo(SpellFactory.water().getPrice()) > 0) {
+                                player.setSpells(SpellFactory.start());
+                            } else {
+                                System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+                            }
+                        case 3:
+                            if (player.getWallet().compareTo(SpellFactory.earth().getPrice()) > 0) {
+                                player.setSpells(SpellFactory.start());
+                            } else {
+                                System.out.println("Niewystarczajaca ilosc srodkow na koncie");
+                            }
+                            break;
                     }
-                case 2:
-                    if (player.getWallet().compareTo(SpellFactory.water().getPrice()) > 0) {
-                        player.setSpells(SpellFactory.start());
-                    } else {
-                        System.out.println("Niewystarczajaca ilosc srodkow na koncie");
-                    }
-                case 3:
-                    if (player.getWallet().compareTo(SpellFactory.earth().getPrice()) > 0) {
-                        player.setSpells(SpellFactory.start());
-                    } else {
-                        System.out.println("Niewystarczajaca ilosc srodkow na koncie");
-                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Wpisz poprawnie!");
+                }
             }
         } else if (choice == 3) {
-            System.out.println("Ktory potion chcesz kupic?");
-            System.out.println("1. Health potion\n2. Mana potion");
-            int potion = scanner.nextInt();
-            System.out.println("Ile potionow chcesz kupic?");
-            int amount = scanner.nextInt();
-            switch (potion) {
-                case 1:
-                    int health = player.getLevel() + amount + random.nextInt(75) + 1;
-                    player.setHealthPoint(player.getHealthPoint() + health);
-                    System.out.println("Health potion dodal Ci " + health + " pkt zycia");
-                    break;
-                case 2:
-                    int mana = player.getLevel() + amount + random.nextInt(35) + 1;
-                    player.setManaPoint(player.getManaPoint() + mana);
-                    System.out.println("Mana potion dodal Ci " + mana + " pkt many");
+            while (true) {
+                try {
+                    System.out.println("Ktory potion chcesz kupic?");
+                    System.out.println("1. Health potion\n2. Mana potion");
+                    int potion = scanner.nextInt();
+                    System.out.println("Ile potionow chcesz kupic?");
+                    int amount = scanner.nextInt();
+                    switch (potion) {
+                        case 1:
+                            int health = player.getLevel() + amount + random.nextInt(75) + 1;
+                            player.setHealthPoint(player.getHealthPoint() + health);
+                            System.out.println("Health potion dodal Ci " + health + " pkt zycia");
+                            break;
+                        case 2:
+                            int mana = player.getLevel() + amount + random.nextInt(35) + 1;
+                            player.setManaPoint(player.getManaPoint() + mana);
+                            System.out.println("Mana potion dodal Ci " + mana + " pkt many");
+                            break;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Wpisz poprawnie");
+                }
             }
         }
 
     }
 
     private static void changePlace() {
-        System.out.println("Lista miejsc:");
-        System.out.println("1 dla " + PlaceFactory.newbie().getName());
-        System.out.println("2 dla" + PlaceFactory.sunBay().getName());
-        int place = scanner.nextInt();
-        switch (place) {
-            case 1:
-                if (player.getWallet().compareTo(PlaceFactory.newbie().getPriceForBoat()) > 0) {
-                    player.setPlace(PlaceFactory.newbie());
-                    System.out.println("Zmieniles miejsce na " + PlaceFactory.newbie().getName());
+        while (true) {
+            try {
+                System.out.println("Lista miejsc:");
+                System.out.println("1 dla " + PlaceFactory.newbie().getName());
+                System.out.println("2 dla" + PlaceFactory.sunBay().getName());
+                int place = scanner.nextInt();
+                switch (place) {
+                    case 1:
+                        if (player.getWallet().compareTo(PlaceFactory.newbie().getPriceForBoat()) > 0) {
+                            player.setPlace(PlaceFactory.newbie());
+                            System.out.println("Zmieniles miejsce na " + PlaceFactory.newbie().getName());
+                        }
+                        break;
+                    case 2:
+                        if (player.getWallet().compareTo(PlaceFactory.sunBay().getPriceForBoat()) > 0) {
+                            player.setPlace(PlaceFactory.sunBay());
+                            System.out.println("Zmieniles miejsce na " + PlaceFactory.sunBay().getName());
+                        }
+                        break;
                 }
-                break;
-            case 2:
-                if (player.getWallet().compareTo(PlaceFactory.sunBay().getPriceForBoat()) > 0) {
-                    player.setPlace(PlaceFactory.sunBay());
-                    System.out.println("Zmieniles miejsce na " + PlaceFactory.sunBay().getName());
-                }
-                break;
+            } catch (InputMismatchException e) {
+                System.out.println("Wpisz poprawnie!");
+            }
         }
-
     }
 
     private static int monsterHit() {
@@ -192,16 +232,22 @@ class Dialog {
     }
 
     private static void choiseMonster() {
-        System.out.println("Z ktorym potworem chcesz sie zmierzyc?");
-        System.out.println("1. Bolb\n2. Snake");
-        int mon = scanner.nextInt();
-        switch (mon) {
-            case 1:
-                monster = MonsterFactory.bolb();
-                break;
-            case 2:
-                monster = MonsterFactory.snake();
-                break;
+        while (true) {
+            try {
+                System.out.println("Z ktorym potworem chcesz sie zmierzyc?");
+                System.out.println("1. Bolb\n2. Snake");
+                int mon = scanner.nextInt();
+                switch (mon) {
+                    case 1:
+                        monster = MonsterFactory.bolb();
+                        break;
+                    case 2:
+                        monster = MonsterFactory.snake();
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Wpisz poprawnie!");
+            }
         }
     }
 
@@ -246,23 +292,28 @@ class Dialog {
     }
 
     private static void show() {
-        System.out.println("1. Lista miejsc\n2. Lista potworow\n3. Lista broni\n4. Lista  czarow\n");
-        int choice = scanner.nextInt();
-        switch (choice) {
-            case 1:
-                placeList();
-                break;
-            case 2:
-                monsterList();
-                break;
-            case 3:
-                weaponList();
-                break;
-            case 4:
-                spellList();
-                break;
+        while (true) {
+            try {
+                System.out.println("1. Lista miejsc\n2. Lista potworow\n3. Lista broni\n4. Lista  czarow\n");
+                int choice = scanner.nextInt();
+                switch (choice) {
+                    case 1:
+                        placeList();
+                        break;
+                    case 2:
+                        monsterList();
+                        break;
+                    case 3:
+                        weaponList();
+                        break;
+                    case 4:
+                        spellList();
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Wpisz poprawnie!");
+            }
         }
-
     }
 
     private static void checkCharacter() {
@@ -280,35 +331,42 @@ class Dialog {
     }
 
     static void menu() {
-        System.out.println("Co chcesz zrobic?");
-        System.out.println("1. Sklep\n2. Walka\n3. Wyswietl liste\n4. Stan postaci\n5. Zmiana miejsca\n6. Zapis gry\n7. Zakoncz gre");
-        int choise = scanner.nextInt();
-        switch (choise) {
-            case 1:
-                shop();
-                break;
-            case 2:
-                choiseMonster();
-                fightWithMonster();
-                break;
-            case 3:
-                show();
-                break;
-            case 4:
-                checkCharacter();
-                break;
-            case 5:
-                changePlace();
-                break;
-            case 6:
-                save();
-                break;
-            case 7:
-                close();
-                break;
+        while (true) {
+            try {
+                System.out.println("Co chcesz zrobic?");
+                System.out.println("1. Sklep\n2. Walka\n3. Wyswietl liste\n4. Stan postaci\n5. Zmiana miejsca\n6. Zapis gry\n7. Zakoncz gre");
+                int choise = scanner.nextInt();
+                switch (choise) {
+                    case 1:
+                        shop();
+                        break;
+                    case 2:
+                        choiseMonster();
+                        fightWithMonster();
+                        break;
+                    case 3:
+                        show();
+                        break;
+                    case 4:
+                        checkCharacter();
+                        break;
+                    case 5:
+                        changePlace();
+                        break;
+                    case 6:
+                        save();
+                        break;
+                    case 7:
+                        close();
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Wpisz poprawnie!");
+            }
         }
     }
-    private static void close(){
+
+    private static void close() {
         System.out.println("Bye Bye!!!");
         System.exit(0);
     }
