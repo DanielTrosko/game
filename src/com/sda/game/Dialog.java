@@ -23,38 +23,50 @@ class Dialog {
     private static Random random = new SecureRandom();
 
     static void choise() throws IOException, ClassNotFoundException {
-        System.out.println("Chcesz odczytac ostatni save? (tak/nie)");
-        String choise = scanner.next();
-        if (choise.equals("tak")) {
-            read();
-        } else if (choise.equals("nie")) {
-            int person = 0;
-            String name;
-            while (true) {
-                try {
-                    System.out.println("Podaj nick");
-                    name = scanner.nextLine();
-                    System.out.println("Jaka postacia chcesz grac?\n1. dla Warrior\n2. dla Mage\n3. dla Paladin\n4. dla Knight");
-                    person = scanner.nextInt();
-                    switch (person) {
-                        case 1:
-                            player = new Player(name, PersonType.WARRIOR, 2, 150, 50, WeaponFactory.mace(), new BigDecimal(500000), PlaceFactory.newbie(), SpellFactory.start());
-                            break;
-                        case 2:
-                            player = new Player(name, PersonType.MAGE, 2, 100, 150, WeaponFactory.rod(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                            break;
-                        case 3:
-                            player = new Player(name, PersonType.PALADIN, 2, 100, 100, WeaponFactory.bow(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                            break;
-                        case 4:
-                            player = new Player(name, PersonType.KNIGHT, 2, 150, 50, WeaponFactory.knife(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
-                            break;
-                    }
-                } catch (InputMismatchException e) {
-                    System.out.println("Wpisz poprawnie!");
-                    scanner.next();
+        while (true) {
+            try {
+                System.out.println("Chcesz odczytac ostatni save? (tak/nie)");
+                String choise = scanner.next();
+                if (choise.equals("tak")) {
+                    read();
+                } else if (choise.equals("nie")) {
+                    createNewPlayer();
+
                 }
-            }///
+            } catch (InputMismatchException e) {
+                System.err.println("Wybierz jeszcze raz: " + e.getMessage());
+                scanner.next();
+                continue;
+            }
+        }
+    }
+
+    private static void createNewPlayer() {
+        while (true) {
+            try {
+                System.out.println("Podaj nick");
+                String name = scanner.next();
+                System.out.println("Jaka postacia chcesz grac?\n1. dla Warrior\n2. dla Mage\n3. dla Paladin\n4. dla Knight");
+                int person = scanner.nextInt();
+                switch (person) {
+                    case 1:
+                        player = new Player(name, PersonType.WARRIOR, 2, 150, 50, WeaponFactory.mace(), new BigDecimal(500000), PlaceFactory.newbie(), SpellFactory.start());
+                        break;
+                    case 2:
+                        player = new Player(name, PersonType.MAGE, 2, 100, 150, WeaponFactory.rod(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                        break;
+                    case 3:
+                        player = new Player(name, PersonType.PALADIN, 2, 100, 100, WeaponFactory.bow(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                        break;
+                    case 4:
+                        player = new Player(name, PersonType.KNIGHT, 2, 150, 50, WeaponFactory.knife(), new BigDecimal(5000), PlaceFactory.newbie(), SpellFactory.start());
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.err.println("Wybierz jeszcze raz: " + e.getMessage());
+                scanner.next();
+                continue;
+            }
         }
     }
 
@@ -129,7 +141,9 @@ class Dialog {
                             break;
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Wpisz poprawnie!");
+                    System.err.println("Wpisz poprawnie!" + e.getMessage());
+                    scanner.next();
+                    continue;
                 }
             }
         } else if (choice == 2) {
@@ -161,7 +175,9 @@ class Dialog {
                             break;
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Wpisz poprawnie!");
+                    System.err.println("Wpisz poprawnie!" + e.getMessage());
+                    scanner.next();
+                    continue;
                 }
             }
         } else if (choice == 3) {
@@ -185,7 +201,9 @@ class Dialog {
                             break;
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Wpisz poprawnie");
+                    System.err.println("Wpisz poprawnie!" + e.getMessage());
+                    scanner.next();
+                    continue;
                 }
             }
         }
@@ -214,7 +232,9 @@ class Dialog {
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Wpisz poprawnie!");
+                System.err.println("Wpisz poprawnie!" + e.getMessage());
+                scanner.next();
+                continue;
             }
         }
     }
@@ -246,7 +266,9 @@ class Dialog {
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Wpisz poprawnie!");
+                System.err.println("Wpisz poprawnie!" + e.getMessage());
+                scanner.next();
+                continue;
             }
         }
     }
@@ -311,7 +333,9 @@ class Dialog {
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Wpisz poprawnie!");
+                System.err.println("Wpisz poprawnie!" + e.getMessage());
+                scanner.next();
+                continue;
             }
         }
     }
@@ -361,7 +385,9 @@ class Dialog {
                         break;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Wpisz poprawnie!");
+                System.err.println("Wpisz poprawnie!" + e.getMessage());
+                scanner.next();
+                continue;
             }
         }
     }
